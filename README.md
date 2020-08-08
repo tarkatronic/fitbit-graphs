@@ -23,9 +23,9 @@ Everything is still very much in the testing and pre-alpha stage, so files are n
 
 1. Create a `data/` folder inside the `fitbit-graphs/` folder.
 2. Go to https://www.fitbit.com/settings/data/export and export all of your historical data, month by month, from Fitbit.
-  a. You will want to be sure to select only the "Body" option under "Include Data", or things will break.
-  b. You should use a consistent naming pattern for the files, to keep them separated and organized. I personally name them with the format `body-YYYY-MM.csv`. For example, `body-2020-08.csv`.
-  c. You must save the files with a `.csv` file extension, or the scripts will not find them.
+  * You will want to be sure to select only the "Body" option under "Include Data", or things will break.
+  * You should use a consistent naming pattern for the files, to keep them separated and organized. I personally name them with the format `body-YYYY-MM.csv`. For example, `body-2020-08.csv`.
+  * You must save the files with a `.csv` file extension, or the scripts will not find them.
 
 Now that your data is all set up and ready, all you need to do to run one of the scripts is:
 
