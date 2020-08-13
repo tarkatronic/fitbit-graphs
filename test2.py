@@ -7,17 +7,18 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 from matplotlib.ticker import MultipleLocator
+import matplotlib.dates as mdates
 
 WINDOW_SIZE = 14
 
 
 def load_data(data_dir: Path) -> pd.DataFrame:
     # Get data from CSV and make it data frames(type)...but called body frame(variable name here)
-    body_frames = [pd.read_csv(fname, skiprows=1,) for fname in data_dir.glob("*.csv")]
+    body_frames = [pd.read_csv(fname, skiprows=1) for fname in data_dir.glob("*.csv")]
     body_frame = pd.concat(body_frames)
     body_frame["Date"] = pd.to_datetime(body_frame["Date"], format="%Y-%m-%d")
-    body_frame.sort_values(by="Date")
-    body_frame.set_index("Date")
+    body_frame = body_frame.sort_values(by="Date")
+    #body_frame.set_index("Date")
     return body_frame
 
 
@@ -28,9 +29,7 @@ def calculate_extra_data_points(data_frame: pd.DataFrame) -> pd.DataFrame:
     data_frame["Lean Mass"] = data_frame["Weight"] - data_frame["Fat Mass"]
     aspects = ["Weight", "Fat", "Fat Mass", "Lean Percentage", "Lean Mass"]
     for aspect in aspects:
-        data_frame[f"Average {aspect}"] = data_frame.rolling(window=WINDOW_SIZE).mean()[
-            aspect
-        ]
+        data_frame[f"Average {aspect}"] = data_frame.rolling(window=WINDOW_SIZE).mean()[aspect]
     print(data_frame)
     return data_frame
 
@@ -48,11 +47,13 @@ def generate_plot(data_frame: pd.DataFrame, data_point: str, output_dir: Path) -
     fig = plt.figure(figsize=figsize)
     ax = fig.add_subplot()
     fig.autofmt_xdate()
+    myFmt = mdates.DateFormatter('%m-%d')
     ax.xaxis.set_major_locator(MultipleLocator(7))
+    ax.xaxis.set_major_formatter(myFmt)
+    # how do we add data labels? ax.set_title('fig.autofmt_xdate fixes the labels')
     ax.plot_date(data_frame["Date"], data_frame[data_point], "co")
     ax.plot_date(
-        data_frame["Date"], data_frame["Average " + data_point], fmt="g-", linewidth=3,
-    )
+        data_frame["Date"], data_frame["Average " + data_point], fmt="g-", linewidth=3)
 
     print(f"Fixing {data_point.lower()} plot axis labels...")
     # fix_x_axis()

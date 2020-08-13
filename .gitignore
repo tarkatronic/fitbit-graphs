@@ -3,3 +3,5 @@
 coverage/
 data/
 graphs/*.png
+.vscode/
+.DS_Store
